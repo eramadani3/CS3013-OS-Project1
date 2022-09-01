@@ -8,15 +8,26 @@
 int main(int argc, char *argv[])
 {
     printf("hello world (pid:%d) \n", (int)getpid());
-    int range = 11 + 1 - 5;
-    int children = 5 + (rand() % range);
+    char *filename = "seed.txt";
+    int number;
+    FILE *fp = fopen(filename, "r");
+    if (fp == NULL)
+    {
+        printf("Error: could not open file %s", filename);
+        return 1;
+    }
+
+    fscanf(fp, "%d", &number);
+    fclose(fp);
+    srand(number * getpid());
+    int children = (rand() % (11 - 5 + 1)) + 5;
     printf("%d \n", children);
     for (int i = 0; i < children; i++)
     {
         if (fork() == 0)
         {
             printf("hello, I am child (pid:%d)\n", (int)getpid());
-            exit(0);
+            exit(1);
         }
     }
     for (int i = 0; i < children; i++)
