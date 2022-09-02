@@ -49,8 +49,10 @@ int helper(int lifespan, int children)
 
         for (int i = 0; i < children; i++)
         {
+            
             wait(NULL);
             printf("[Parent, PID: %d]: Child %d finished with status code %d It's now my turn to exit. \n", (int)getppid(), (int)getpid(), ));
+            exit(lifespan);
         }
         return 0;
     }
