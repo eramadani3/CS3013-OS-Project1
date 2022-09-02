@@ -1,2 +1,4 @@
+all: prolific generation
+
 prolific: prolific.c
-	gcc -o prolific prolific.c -I.
+generation: generation.c

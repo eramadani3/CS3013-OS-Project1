@@ -34,24 +34,28 @@ int main(int argc, char *argv[])
     return helper(lifespan, children);
 }
 
-int helper(int lifespan, int children){
-    if(lifespan <= 0){
+int helper(int lifespan, int children)
+{
+    if (lifespan <= 0)
+    {
         exit(0);
-    }else{
+    }
+    else
+    {
         if (fork() == 0)
         {
             printf("[Parent]: I am waiting for PID %d to finish \n", (int)getpid());
-            printf("\t [Child, PID: %d]: I was called with the descendant count=%d. I'll have %d descendants(s)\n", (int)getpid(),lifespan,lifespan--);
+            printf("\t [Child, PID: %d]: I was called with the descendant count=%d. I'll have %d descendants(s)\n", (int)getpid(), lifespan, lifespan--);
             helper(lifespan, children);
             exit(lifespan);
         }
 
-        for (int i = 0; i < children; i++){
-        wait(NULL);
+        for (int i = 0; i < children; i++)
+        {
+            wait(NULL);
+        }
+        return 0;
     }
-    return 0;
-    }
-
 }
 
 // int main(int argc, char *argv[])
@@ -88,7 +92,6 @@ int helper(int lifespan, int children){
 //                 exit(0);
 //             };
 //             };
-            
 
 //             printf("[Parent]: I am waiting for PID %d to finish \n", (int)getpid());
 //             printf("\t [Child, PID: %d]: I am the child\n", (int)getpid());
