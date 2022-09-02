@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 {
     char *filename = "seed.txt";
     int number;
+    int pids[11];
     FILE *fp = fopen(filename, "r");
     if (fp == NULL)
     {
@@ -27,10 +28,13 @@ int main(int argc, char *argv[])
     {
         if (fork() == 0)
         {
-            printf("[Parent]: I am waiting for PID %d to finish \n", (int)getpid());
-            printf("\t [Child, PID: %d]: I am the child\n", (int)getpid());
-            printf("\t [Child, PID: %d]: Now exiting... \n", (int)getpid());
-            printf("[Parent]: Child %d finished, onwards! \n", (int)getpid());
+            int exitNum = ((children % 50) + 1);
+            int exitTime = ((children % 3) + 1);
+            pids[i] = (int)getpid();
+            printf("[Parent]: I am waiting for PID %d to finish \n", pids[i]);
+            printf("\t [Child, PID: %d]: I am the child and I will wait %d seconds and exit with code %d\n", pids[i], exitTime, exitNum);
+            printf("\t [Child, PID: %d]: Now exiting... \n", pids[i]);
+            printf("[Parent]: Child %d finished with status code %d. Onward! \n", pids[i], exitNum);
             exit(0);
         }
     }
