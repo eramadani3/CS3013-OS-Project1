@@ -1,6 +1,6 @@
 #ifndef GENERATION_H
 #define GENERATION_H
 
-int helper(int lifespan, int children);
+int helper(int lifespan);
 
 #endif
