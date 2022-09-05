@@ -17,11 +17,8 @@ int main(int argc, char *argv[])
     }
     fscanf(fp, "%d", &number);
     fclose(fp);
-
-    
     srand(number * getpid());
-    int exploreNum = (rand() % 6);
-    
+
     char cwd[256];  
     char* directories[6];
     directories[0]="/home";
@@ -30,20 +27,30 @@ int main(int argc, char *argv[])
     directories[3]="/usr";
     directories[4]="/boot";
     directories[5]="/sbin";
+    
 
-
-    char* argument_list[] = {"ls", "-l", NULL}; // NULL terminated array of char* strings
     printf("Random seed value (converted to integer): %d \n", number);
-    printf("Random explorer number: %d \n", exploreNum);
-    if (fork() == 0)
+    printf("It's time to see the world/file system! \n");
+    for(int i = 1; i < 6; i++)
     {
-        if(chdir(directories[exploreNum])!= 0) perror("chdir failed");
-        if (getcwd(cwd, sizeof(cwd)) == NULL) 
-            perror("getcwd() error");
-        else
-            printf("current working directory is: %s\n", cwd);
-            execvp("ls", argument_list);
+        char* argument_list[] = {"ls", "-tr", NULL}; // NULL terminated array of char* strings
+        int exploreNum = (rand() % 6);
+        if (fork() == 0)
+        {
+           
+            printf("Selection: %d \n", i);
+            if(chdir(directories[exploreNum])!= 0) perror("chdir failed");
+            if (getcwd(cwd, sizeof(cwd)) == NULL) 
+                perror("getcwd() error");
+            else
+                printf("current working directory is: %s\n", cwd);
+                execvp("ls", argument_list);
+        }
+        exit(0);
     }
-    wait(NULL);
+    for (int i = 0; i < 6; i++)
+    {
+        wait(NULL);
+    }
     return 0;
 }
