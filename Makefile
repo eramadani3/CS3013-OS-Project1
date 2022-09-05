@@ -1,4 +1,8 @@
-all: prolific generation
+all: prolific generation explorer
 
-prolific: prolific.c
-generation: generation.c
+prolific: 
+	gcc -Wall -o prolific prolific.c
+generation: 
+	gcc -Wall -o generation generation.c
+explorer: 
+	gcc -Wall -o explorer explorer.c
