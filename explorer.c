@@ -31,26 +31,31 @@ int main(int argc, char *argv[])
 
     printf("Random seed value (converted to integer): %d \n", number);
     printf("It's time to see the world/file system! \n");
-    for(int i = 1; i < 6; i++)
+    for(int i = 1; i < 3; i++)
     {
-        char* argument_list[] = {"ls", "-tr", NULL}; // NULL terminated array of char* strings
         int exploreNum = (rand() % 6);
+        if(chdir(directories[exploreNum])!= 0) perror("chdir failed");
         if (fork() == 0)
         {
-           
-            printf("Selection: %d \n", i);
-            if(chdir(directories[exploreNum])!= 0) perror("chdir failed");
-            if (getcwd(cwd, sizeof(cwd)) == NULL) 
+            if (getcwd(cwd, sizeof(cwd)) == NULL) {
                 perror("getcwd() error");
-            else
-                printf("current working directory is: %s\n", cwd);
+            }
+            else{
+                printf("Selection: %d \n", i);
+                printf("Current working directory is: %s\n", cwd);
+                printf("[Parent]: I am waiting for PID %d to finish \n", (int) getpid());
+                printf("\t [Child, PID: %d]: Executing 'ls -tr' command... \n",(int) getpid());
+                char* argument_list[] = {"ls", "-tr", NULL}; // NULL terminated array of char* strings
                 execvp("ls", argument_list);
+                
+            }   
         }
-        exit(0);
     }
-    for (int i = 0; i < 6; i++)
+    for (int i = 1; i < 3; i++)
     {
+        
         wait(NULL);
+       
     }
     return 0;
 }
