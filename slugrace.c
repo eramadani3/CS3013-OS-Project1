@@ -7,12 +7,11 @@
 
 int main(int argc, char *argv[])
 {
-    
-    srand(number * getpid());
-    printf("Random seed value (converted to integer): %d \n", number);
+    char* filenames[4] = {"seed_slug_1.txt", "seed_slug_2.txt", "seed_slug_3.txt", "seed_slug_4.txt"};
+    int* pids = (int*) malloc(4 * sizeof(int));
     for (int i = 1; i <= 4; i++)
     {
-        char *filename = "seed.txt";
+        char *filename = filenames[i-1];
         int number;
         FILE *fp = fopen(filename, "r");
         if (fp == NULL)
@@ -20,23 +19,27 @@ int main(int argc, char *argv[])
             printf("Error: could not open file %s", filename);
             return 1;
         }
-
         fscanf(fp, "%d", &number);
         fclose(fp);
+        srand(number * getpid());
+        printf("Random seed value (converted to integer): %d \n", number);
         if (fork() == 0)
         {
-            int exitNum = ((pids[i] % 50) + 1);
-            int exitTime = ((pids[i] % 3) + 1);
+            pids[i] = (int) getpid();
             printf("[Parent]: I am waiting for PID %d to finish \n", getpid());
-            printf("\t [Child, PID: %d]: I am the child and I will wait %d seconds and exit with code %d\n", getpid(), exitTime, exitNum);
             printf("\t [Child, PID: %d]: Now exiting... \n", getpid());
-            printf("[Parent]: Child %d finished with status code %d. Onward! \n", getpid(), exitNum);
             exit(0);
+        }else{
+            
         }
     }
     for (int i = 0; i < 4; i++)
     {
-        wait(NULL);
+        if(wait(NULL)){
+            printf("Child finished \n");
+        }else{
+            usleep(20);
+        }
     }
     return 0;
 }
