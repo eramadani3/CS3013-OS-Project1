@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 {
     char *filename = "seed.txt";
     int number;
+    int bufSize=32;
     FILE *fp = fopen(filename, "r");
     if (fp == NULL)
     {
@@ -33,7 +34,7 @@ int main(int argc, char *argv[])
         {
             if (getcwd(cwd, sizeof(cwd)) == NULL) perror("getcwd() error");
             printf("Selection #%d: %s [SUCCESS]\n", i+1, directories[exploreNum]);
-            printf("Current reported directory is: %s\n", cwd);
+            printf("Current reported directory is: %s\n", getcwd(cwd,bufSize));
             printf("[Parent]: I am waiting for PID %d to finish \n", (int) getpid());
             printf("\t [Child, PID: %d]: Executing 'ls -tr' command... \n",(int) getpid());
             char* argument_list[] = {"ls", "-tr", NULL}; // NULL terminated array of char* strings
