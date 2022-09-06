@@ -40,13 +40,13 @@ int main(int argc, char *argv[])
     char* flipOptions[2] = {"last -i -x", "id --group"};
     srand(number * getpid());
     int slugTime = (rand() % (9 - 4 + 1)) + 4;
-    int coinFlip = (rand() % (2 - 1 + 1)) + 1;
+    int coinFlip = (rand() % (1 - 0 + 1)) + 0;
     printf("[Slug ID: %d] Random seed value (converted to integer): %d \n", (int) getpid(), number);
     printf("[Slug ID: %d] Delay time is %d seconds! Coin Flip: %d \n", (int) getpid(), slugTime, coinFlip);
     printf("[Slug ID: %d] I will get the job done. Eventually... \n", (int) getpid());
     sleep(slugTime);
     char* cmd;
-    if(coinFlip == 1){
+    if(coinFlip == 0){
         cmd = flipOptions[0];
     }else{
         cmd = flipOptions[1];
