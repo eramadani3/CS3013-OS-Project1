@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
             printf("Enter a number 1-4 \n");
     }
     printf("file name: %s, file number: %d \n", filename, filenumber);
-
     int number;
     FILE *fp = fopen(filename, "r");
     if (fp == NULL)
@@ -41,9 +40,19 @@ int main(int argc, char *argv[])
     char* flipOptions[2] = {"last -i -x", "id --group"};
     srand(number * getpid());
     int slugTime = (rand() % (9 - 4 + 1)) + 4;
-    int coinFlip = rand();
+    int coinFlip = (rand() % (2 - 1 + 1)) + 1;
+    printf("[Slug ID: %d] Random seed value (converted to integer): %d \n", (int) getpid(), number);
+    printf("[Slug ID: %d] Delay time is %d seconds! Coin Flip: %d \n", (int) getpid(), slugTime, coinFlip);
+    printf("[Slug ID: %d] I will get the job done. Eventually... \n", (int) getpid());
     sleep(slugTime);
-    
+    char* cmd;
+    if(coinFlip == 1){
+        cmd = flipOptions[0];
+    }else{
+        cmd = flipOptions[1];
+    }
+    printf("[Slug ID: %d]  Break time is over! I am running the '%s' command. \n", (int) getpid(), cmd);
+    system(cmd);
    
     return 0;
 }
