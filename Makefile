@@ -1,2 +1,7 @@
+all: prolific generation explorer slug slugrace
+
 prolific: prolific.c
-	gcc -o prolific prolific.c -I.
+generation: generation.c
+explorer: explorer.c
+slug: slug.c
+slugrace: slugrace.c
