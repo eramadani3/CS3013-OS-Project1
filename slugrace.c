@@ -35,7 +35,6 @@ int main(int argc, char *argv[])
             printf("[Parent]: I forked off child %d \n", getpid());
             printf("\t [Child, PID: %d]: Executing './slug %d' command... \n", getpid(),i);
             execvp("./slug",argument_list);
-            exit(0);
         }
     }
     for(int i =0; i < 4; i++){
@@ -43,7 +42,7 @@ int main(int argc, char *argv[])
         if(waitpid(-1,&status,WNOHANG)){
             printf("Child finished \n");
         }else{
-            usleep(20);
+            usleep(200000);
             printf("The race is ongoing. The following children are still racing: \n");
         }
     }
