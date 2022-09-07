@@ -21,7 +21,6 @@ int main(int argc, char *argv[])
     fclose(fp);
     srand(number * getpid());
     int lifespan = (rand() % (14 - 8 + 1)) + 8;
-    //int children = (rand() % (11 - 5 + 1)) + 5;
     printf("Random seed value (converted to integer): %d \n", number);
     printf("Random Descendant count: %d \n", lifespan);
     printf("Time to meet the kids/grandkids/great grand kids/... \n");
