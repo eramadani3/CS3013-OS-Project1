@@ -26,20 +26,21 @@ int main(int argc, char *argv[])
         printf("Random seed value (converted to integer): %d \n", number);
         if (fork() == 0)
         {
-            char* argument_list[2];
+            char* argument_list[3];
             sprintf(number_buff, "%d", i);
-            argument_list[0] = number_buff;
-            argument_list[1]=NULL;
+            argument_list[0] = "./slug";
+            argument_list[1]=number_buff;
+            argument_list[2]=NULL;
             pids[i] = (int) getpid();
             printf("[Parent]: I forked off child %d \n", getpid());
             printf("\t [Child, PID: %d]: Executing './slug %d' command... \n", getpid(),i);
-            execv(".",argument_list);
+            execvp("./slug",argument_list);
             exit(0);
         }
     }
     for(int i =0; i < 4; i++){
         int status;
-        if(waitpid(-1,NULL,WNOHANG)){
+        if(waitpid(-1,&status,WNOHANG)){
             printf("Child finished \n");
         }else{
             usleep(20);
