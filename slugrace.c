@@ -7,43 +7,48 @@
 
 int main(int argc, char *argv[])
 {
-    char* filenames[4] = {"seed_slug_1.txt", "seed_slug_2.txt", "seed_slug_3.txt", "seed_slug_4.txt"};
-    int* pids = (int*) malloc(4 * sizeof(int));
     char number_buff[32];
-    for (int i = 1; i <= 4; i++)
+    int* pids[4];
+    for (int i = 0; i < 4; i++)
     {
-        char *filename = filenames[i-1];
-        int number;
-        FILE *fp = fopen(filename, "r");
-        if (fp == NULL)
-        {
-            printf("Error: could not open file %s", filename);
-            return 1;
-        }
-        fscanf(fp, "%d", &number);
-        fclose(fp);
-        srand(number * getpid());
-        printf("Random seed value (converted to integer): %d \n", number);
-        if (fork() == 0)
+        int cpid = fork();
+        if (cpid == 0)
         {
             char* argument_list[3];
-            sprintf(number_buff, "%d", i);
+            sprintf(number_buff, "%d", i+1);
             argument_list[0] = "./slug";
             argument_list[1]=number_buff;
             argument_list[2]=NULL;
-            pids[i] = (int) getpid();
-            printf("[Parent]: I forked off child %d \n", getpid());
-            printf("\t [Child, PID: %d]: Executing './slug %d' command... \n", getpid(),i);
+            printf("\t [Child, PID: %d]: Executing './slug %d' command... \n", getpid(),i+1);
             execvp("./slug",argument_list);
+        }else{
+            pids[i] = cpid;
+            printf("[Parent]: I forked off child %d \n", getpid());
         }
     }
-    for(int i =0; i < 4; i++){
+
+    int unfinished =4;
+    while(unfinished > 0)
+    {
         int status;
-        if(waitpid(-1,&status,WNOHANG)){
-            printf("Child finished \n");
-        }else{
+        int finishedID=waitpid(-1,&status,WNOHANG);
+        if(finishedID==0){
             usleep(200000);
-            printf("The race is ongoing. The following children are still racing: \n");
+            printf("The race is ongoing. The following children are still racing: ");
+            for(int j =0; j < 4; j++){
+                if(pids[j] !=-1){
+                    printf("%d ", pids[j]);
+                }
+            }
+            printf("\n");
+        }else{
+            --unfinished;
+            for(int i =0; i < 4; i ++){
+                if(pids[i] == finishedID){
+                    pids[i] = -1;
+                }
+            }
+            printf("Child %d has crossed the finish line! \n", finishedID);
         }
     }
     return 0;

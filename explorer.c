@@ -22,8 +22,6 @@ int main(int argc, char *argv[])
     char* directories[6] = {"/home", "/proc", "proc/sys", "/usr", "/boot", "/sbin"};
     char cwd[256];  
     
-    
-
     printf("Random seed value (converted to integer): %d \n", number);
     printf("It's time to see the world/file system! \n");
     for(int i = 0; i < 5; i++)
